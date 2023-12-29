@@ -33,12 +33,12 @@ View: SwiftUI views responsible for rendering the user interface and handling us
   The app uses Combine, Apple's framework for reactive programming, to handle data transport and asynchronous operations. Combine provides a declarative way to handle asynchronous events, such as network requests and data updates.
 ---
 # Installation
-To run the app:
+To run the app:<br />
 
-Clone the repository.
-pod install.
-Open the project in Xcode.
-Build and run the app on a simulator or physical device.
+Clone the repository.<br />
+pod install.<br />
+Open the project in Xcode.<br />
+Build and run the app on a simulator or physical device.<br />
 
 ---
 # Usage
