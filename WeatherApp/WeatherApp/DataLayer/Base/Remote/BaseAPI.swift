@@ -39,7 +39,6 @@ class BaseAPI {
                         }
                     }
                     if let error = returnedError {
-                        print(error.localizedDescription)
                     }
                 case .success(let value):
                     promise(.success(value))
@@ -62,7 +61,6 @@ class BaseAPI {
                         apiError = APIError(responseCode: httpResponse.statusCode, customError: errors["message"] as? String)
                     }
                 } catch {
-                    print("error: \(error)")
                 }
             }
     

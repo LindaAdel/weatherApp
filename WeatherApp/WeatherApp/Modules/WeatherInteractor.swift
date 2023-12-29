@@ -26,7 +26,6 @@ extension WeatherInteractor: WeatherBusinessLogic {
             .sink(receiveCompletion: { completion in
             if case let .failure(error) = completion {
                 // Handle error
-                print("error-interactor-\(error)")
             }
         }, receiveValue: { [weak self] weatherResponse in
             // Process Weather Response
