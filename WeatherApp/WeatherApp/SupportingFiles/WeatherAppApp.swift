@@ -16,10 +16,10 @@ struct WeatherAppApp: App {
     }
     
     func configureView() -> some View {
-      var view = WeatherUIView(currentWeatherViewModel: CurrentWeatherModel.Fetch.ViewModel())
-      CurrentWeatherInteractorAssembler.shareInstance.assemble()
-      let interactor = CurrentWeatherInteractor()
-      let presenter = CurrentWeatherPresenter()
+      var view = WeatherUIView(weatherViewModel: WeatherModel.Fetch.ViewModel())
+      WeatherInteractorAssembler.shareInstance.assemble()
+      let interactor = WeatherInteractor()
+      let presenter = WeatherPresenter()
       view.interactor = interactor
       interactor.presenter = presenter
       presenter.view = view

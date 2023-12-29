@@ -1,5 +1,5 @@
 //
-//  CurrentWeatherModel.swift
+//  WeatherModel.swift
 //  WeatherApp
 //
 //  Created by Linda adel on 28/12/2023.
@@ -7,16 +7,17 @@
 
 import Foundation
 
-enum CurrentWeatherModel {
+enum WeatherModel {
     enum Fetch {
         struct Request {
             var countryCode: String
         }
         struct Response {
-            var currentWeatherModel: CurrentWeatherResponse
+            var weatherModel: WeatherResponse
         }
         class ViewModel: ObservableObject {
             @Published var currentWeatherDataStoreModel: CurrentWeatherDataStoreModel?
+            @Published var WeatherForecastDataStoreModel: [ForecastDayInformationDataModel]?
         }
     }
 }

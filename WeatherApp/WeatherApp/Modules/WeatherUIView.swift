@@ -8,23 +8,24 @@
 import SwiftUI
 import Combine
 
-protocol CurrentWeatherDisplayLogic {
-    func displayCategories(viewModel: CurrentWeatherModel.Fetch.ViewModel)
+protocol WeatherDisplayLogic {
+    func displayWeatherInformation(viewModel: WeatherModel.Fetch.ViewModel)
 }
 struct WeatherUIView: View {
-    var interactor: CurrentWeatherBusinessLogic?
-    @ObservedObject var currentWeatherViewModel: CurrentWeatherModel.Fetch.ViewModel
+    var interactor: WeatherBusinessLogic?
+    @ObservedObject var weatherViewModel: WeatherModel.Fetch.ViewModel
     @State private var locationCancellable = Set<AnyCancellable>()
     var body: some View {
       
             ZStack {
                 BackgroundUIView()
                 VStack{
-                    HeaderUIView(Title: currentWeatherViewModel.currentWeatherDataStoreModel?.zoneName ?? "")
+                    HeaderUIView(Title: weatherViewModel.currentWeatherDataStoreModel?.zoneName ?? "")
                     Spacer()
-                    CurrentWeatherUIView(currentWeatherViewModel: currentWeatherViewModel)
+                    CurrentWeatherUIView(weatherViewModel: weatherViewModel)
                         .padding([.leading, .trailing])
                     Spacer()
+                    ForecastWeatherUIView(weatherViewModel: weatherViewModel)
                 }
             }
             .colorScheme(.dark)
@@ -34,10 +35,11 @@ struct WeatherUIView: View {
         }
 }
 
-extension WeatherUIView: CurrentWeatherDisplayLogic{
-    func displayCategories(viewModel: CurrentWeatherModel.Fetch.ViewModel) {
+extension WeatherUIView: WeatherDisplayLogic{
+    func displayWeatherInformation(viewModel: WeatherModel.Fetch.ViewModel) {
         DispatchQueue.main.async {
-            self.currentWeatherViewModel.currentWeatherDataStoreModel = viewModel.currentWeatherDataStoreModel
+            self.weatherViewModel.currentWeatherDataStoreModel = viewModel.currentWeatherDataStoreModel
+            self.weatherViewModel.WeatherForecastDataStoreModel = viewModel.WeatherForecastDataStoreModel
         }
     }
     
@@ -45,8 +47,8 @@ extension WeatherUIView: CurrentWeatherDisplayLogic{
     LocationManager.LocationSharedInstance.requestAccessingLocation()
     LocationManager.LocationSharedInstance.$countryCode.sink(receiveValue: { countryCode in
           if let countryCode = countryCode {
-              let request = CurrentWeatherModel.Fetch.Request(countryCode: countryCode)
-              interactor?.loadCurrentWeather(request: request)
+              let request = WeatherModel.Fetch.Request(countryCode: countryCode)
+              interactor?.loadWeather(request: request)
           }
         }).store(in: &locationCancellable)
         

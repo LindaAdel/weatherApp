@@ -22,13 +22,20 @@ class DateManager {
     
     func getCurrentDate() -> String {
         let currentDate = Date()
-        return formatCurrentDate(date: currentDate)
+        return formatDate(date: currentDate, format: "EEEE, MMM d")
     }
     
-    private func formatCurrentDate(date: Date) -> String {
-        self.dateFormatter.dateFormat = "EEEE, MMM d"
-        return self.dateFormatter.string(from: date)
+    func getWeekDay(from date: String) -> String {
+        let inputDateFormatter = DateFormatter()
+        inputDateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        guard let inputDate = inputDateFormatter.date(from: date) else {
+            return ""
+        }
+        
+        return formatDate(date: inputDate, format: "EEEE")
     }
+    
 }
 
    

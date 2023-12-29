@@ -7,14 +7,17 @@
 
 import Foundation
 struct NetworkConstants{
-    static let apiKey  = AppConfiguration.apiKey
+    struct constants{
+        static let apiKey  = AppConfiguration.apiKey
+        static let forecastDays = 5
+    }
     
     struct ContentType {
         static let json = "application/json"
     }
     
     struct path {
-        static let currentWeather = "current.json"
+        static let weather = "forecast.json"
     }
     
 }

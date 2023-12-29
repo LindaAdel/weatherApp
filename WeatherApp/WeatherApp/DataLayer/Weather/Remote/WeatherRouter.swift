@@ -1,5 +1,5 @@
 //
-//  CurrentWeatherRouter.swift
+//  WeatherRouter.swift
 //  WeatherApp
 //
 //  Created by Linda adel on 28/12/2023.
@@ -8,12 +8,12 @@
 import Foundation
 import Alamofire
 
-enum CurrentWeatherRouter: BaseRouter {
-    case getCurrentWeather(countryCode: String)
+enum WeatherRouter: BaseRouter {
+    case getWeatherInformation(countryCode: String)
     
     var method: HTTPMethod {
         switch self {
-        case .getCurrentWeather:
+        case .getWeatherInformation:
             return .get
         }
         
@@ -26,8 +26,8 @@ enum CurrentWeatherRouter: BaseRouter {
     }
     var path: String {
         switch self {
-        case .getCurrentWeather(let countryCode):
-            return "\(NetworkConstants.path.currentWeather)?q=\(countryCode)&key=\(NetworkConstants.apiKey)"
+        case .getWeatherInformation(let countryCode):
+            return "\(NetworkConstants.path.weather)?q=\(countryCode)&days=\(NetworkConstants.constants.forecastDays)&key=\(NetworkConstants.constants.apiKey)"
         }
     }
     
