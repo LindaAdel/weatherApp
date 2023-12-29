@@ -28,9 +28,9 @@ extension WeatherInteractor: WeatherBusinessLogic {
                 // Handle error
                 print("error-interactor-\(error)")
             }
-        }, receiveValue: { [weak self] currentWeatherResponse in
+        }, receiveValue: { [weak self] weatherResponse in
             // Process Weather Response
-            let response = WeatherModel.Fetch.Response(weatherModel: currentWeatherResponse)
+            let response = WeatherModel.Fetch.Response(weatherModel: weatherResponse)
             self?.presenter?.presentWeatherInformation(response: response)
         })
         .store(in: &cancellables)

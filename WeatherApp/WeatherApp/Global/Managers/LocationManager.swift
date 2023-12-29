@@ -8,29 +8,37 @@
 import Foundation
 import CoreLocation
 
+protocol LocationManagerDelegate: AnyObject {
+    func didUpdateCountryCode(_ countryCode: String?)
+    func didFailWithError(_ error: Error)
+}
+
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
-    
     static let LocationSharedInstance = LocationManager()
-    private var locationManager = CLLocationManager()
+    
+    private var locationManager: CLLocationManager
     private var lastLocation: CLLocation?
     
+    weak var delegate: LocationManagerDelegate?
+    
     @Published var countryCode: String?
-  //  var countryCode: String?
     
     override private init() {
+        locationManager = CLLocationManager()
         super.init()
+        
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.pausesLocationUpdatesAutomatically = false
     }
-
+    
     func requestAccessingLocation() {
         locationManager.requestAlwaysAuthorization()
-        self.startUpdating()
+        startUpdating()
     }
-
+    
     func startUpdating() {
         locationManager.startUpdatingLocation()
     }
@@ -39,28 +47,32 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.stopUpdatingLocation()
     }
     
-    private func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        print("didFailWithError Error" + error.description)
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        delegate?.didFailWithError(error)
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        lastLocation = locations.last
-        guard let lastLocation = lastLocation else {
+        guard let lastLocation = locations.last else {
             return
         }
+        
+        self.lastLocation = lastLocation
         getCurrentCountryCode(lastLocation: lastLocation)
     }
     
     private func getCurrentCountryCode(lastLocation: CLLocation) {
         let geocoder = CLGeocoder()
-
-          geocoder.reverseGeocodeLocation(lastLocation) { [weak self] (placemarks, error) in
-              if error == nil {
-                  if let firstLocation = placemarks?[0] {
-                      self?.countryCode = firstLocation.postalCode
-                      self?.locationManager.stopUpdatingLocation()
-                  }
-              }
-          }
+        
+        geocoder.reverseGeocodeLocation(lastLocation) { [weak self] (placemarks, error) in
+            if let error = error {
+                self?.delegate?.didFailWithError(error)
+                return
+            }
+            
+            if let firstLocation = placemarks?.first {
+                self?.countryCode = firstLocation.postalCode
+                self?.delegate?.didUpdateCountryCode(firstLocation.postalCode)
+            }
+        }
     }
 }

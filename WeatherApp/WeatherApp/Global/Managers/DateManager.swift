@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 class DateManager {
     static let DateManagerSharedInstance = DateManager()
     private let dateFormatter: DateFormatter
