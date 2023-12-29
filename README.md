@@ -81,6 +81,6 @@ These dependencies are managed using Swift Package Manager and are included in t
 
 ---
 # Acknowledgements
-Alamofire for providing a powerful networking library.
-SwiftUI for the declarative approach to building user interfaces.
-VIP Clean Architecture for the architectural pattern used in the app.
+Alamofire for providing a powerful networking library.<br />
+SwiftUI for the declarative approach to building user interfaces.<br />
+VIP Clean Architecture for the architectural pattern used in the app.<br />
